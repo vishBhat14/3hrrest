@@ -78,7 +78,7 @@ button{
             times
 
            } 
-           axios.post('https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData',obj)
+           axios.post('https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData',obj)
            .then((res)=>{
             console.log(res)
             ShowUserOnScreen(res.data)
@@ -90,7 +90,7 @@ button{
 
         
         function removefrombackend(obj){
-        axios.delete(`https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData/${obj._id}`)
+        axios.delete(`https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData/${obj._id}`)
         .then((res)=>{
         console.log("successfully deleted");
         }).catch((err) =>
@@ -99,6 +99,15 @@ button{
         } 
         ) 
       } 
+    //   function editfrombackend(obj){
+    //     axios.put(`https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData/${obj._id}`)
+    //     .then((res)=>console.log('succesfully updated'))
+    //     .catch((err) =>
+    //     {
+    //     console.log(" Finding Difficult to delete user from backend ")
+    //     } )
+
+    //   }
           function ShowUserOnScreen(obj)
           {
             
@@ -119,12 +128,15 @@ button{
                  parentrele.removeChild(childele);
             }
             editbtn.onclick =() => {
+                //editfrombackend(obj)
+                removefrombackend(obj);
+                console.log('edit succesful')
                 parentrele.removeChild(childele);
-                localStorage.removeItem(obj.emails);
+                // localStorage.removeItem(obj.emails);
                 document.getElementById('username').value=obj.names;
                 document.getElementById('email').value=obj.emails;
                 document.getElementById('telp').value=obj.telps;
-                document.getElementById('datetime-local').value=obj.times;
+                document.getElementById('time').value=obj.times;
               }
             childele.appendChild(deletbtn);
             childele.appendChild(editbtn);
@@ -135,7 +147,7 @@ button{
           
         }
         window.addEventListener("DOMContentLoaded",()=>{
-            axios.get('https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData')
+            axios.get('https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData')
            .then((res)=>{console.log(res);
             for(var i=0;i<res.data.length;i++)
             {
@@ -144,7 +156,7 @@ button{
            .catch((err)=>console.log(err))
            
         function removefrombackend(obj){
-        axios.delete(`https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData/${obj._id}`)
+        axios.delete(`https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData/${obj._id}`)
         .then((res)=>{
         console.log("successfully deleted");
         }).catch((err) =>
@@ -153,6 +165,15 @@ button{
         } 
         ) 
       } 
+    //   function editfrombackend(obj){
+    //     axios.put(`https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData/${obj._id}`)
+    //     .then((res)=>console.log('succesfully updated'))
+    //     .catch((err) =>
+    //     {
+    //     console.log(" Finding Difficult to delete user from backend ")
+    //     } )
+
+    //   }
           function ShowUserOnScreen(obj)
           {
             const parentrele= document.getElementById('listOfitems');
@@ -172,12 +193,15 @@ button{
                 parentrele.removeChild(childele);
             }
             editbtn.onclick =() => {
+               // editfrombackend(obj)
+                removefrombackend(obj)
+                console.log('edit succesful')
                 parentrele.removeChild(childele);
-                localStorage.removeItem(obj.emails);
+                // localStorage.removeItem(obj.emails);
                 document.getElementById('username').value=obj.names;
                 document.getElementById('email').value=obj.emails;
                 document.getElementById('telp').value=obj.telps;
-                document.getElementById('datetime-local').value=obj.times;
+                document.getElementById('time').value=obj.times;
               }
             childele.appendChild(deletbtn);
             childele.appendChild(editbtn);
@@ -186,18 +210,6 @@ button{
             
           }
         })
-    //     function removefrombackend(obj){
-    //     axios.delete(`https://crudcrud.com/api/6069d02c9cd94d35bda2a2d2931a1db0/appointmentData'/${obj._id}`)
-    //     .then((res)=>{
-    //     console.log("successfully deleted");
-    //     }).catch((err) =>
-    //     {
-    //     console.log(" Finding Difficult to delete user from backend ")
-    //     } 
-    //     ) 
-    //   } 
-    
-   
         
      
         
