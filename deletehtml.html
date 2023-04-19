@@ -1,0 +1,81 @@
+<html>
+    <body>
+        <form onSubmit="saveToLocalStorage(event)">
+            <label>Name</label>
+            <input type="text"name="username" id="usernameInputTag" required/>
+            <label>EmaiId</label>
+            <input type="email"name="emailId" id="emailInputTag" required/>
+            <label>phone Number</label>
+            <input type="tel" name="phonenumber" id="phoneNumberInputTag" />
+            <button>Submit</button>
+            </form>
+            <ul id="listOfitems">-</ul>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+        <script>
+            function saveToLocalStorage(event) {
+            event.preventDefault();
+            const name = event.target.username.value;
+            const email = event.target.emailId.value;
+            const phonenumber = event.target.phonenumber.value;
+            //localStorage.setItem('name', name);
+            //localStorage.setItem('emailId', email);
+            //localStorage.setItem('phonenumber', phonenumber)
+            const obj= {
+                name,
+                email,
+                phonenumber
+            }
+            axios.post("https://crudcrud.com/api/e4a55e40d2714a00bda2bcbf71ac465d/appointmentData",obj)
+            .then((response) => {
+                showNewUserOnScreen(response.data)
+                console.log(response)
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+                localStorage.setItem(obj.email,JSON.stringify(obj))
+                showNewUserOnScreen(obj)
+            }
+            // window.addEventListener("DOMContentLoaded",() => {
+            //     axios.get("https://crudcrud.com/api/e4a55e40d2714a00bda2bcbf71ac465d/appointmentData",obj)
+            //     .then((response)=> {
+            //      console.log(response)
+            
+            //     })
+            //     .catch((err)=> {
+            //         console.log(err)
+            //     })
+            // })
+            function showNewUserOnScreen(obj){
+                const parentElem = document.getElementById('listOfitems')
+                const childElem = document.createElement('li')
+                childElem.textContent = obj.name + ' - ' + obj.email + ' - ' + obj.phonenumber
+                const deleteBtn=document.createElement("input");
+                deleteBtn.type="button"
+                deleteBtn.value="Delete"
+                deleteBtn.onclick= () => {
+                    localStorage.removeItem(obj.email)
+                    parentElem.removeChild(childElem)
+                    document.getElementById('usernameInputTag').value = obj.name
+                    document.getElementById('emailInputTag').value = obj.email
+                    document.getElementById('phoneNumberInputTag').value = obj.phonenumber
+                }
+                
+                childElem.appendChild(deleteBtn)
+                parentElem.appendChild(childElem)
+        }
+        window.addEventListener("DOMContentLoaded",() => {
+                axios.get("https://crudcrud.com/api/e4a55e40d2714a00bda2bcbf71ac465d/appointmentData")
+                .then((response)=> {
+                 console.log(response)
+            
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+            })
+        </script>
+
+
+    </body>
+</html>
