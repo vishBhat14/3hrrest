@@ -8,11 +8,9 @@
 </head>
 <body>
     <style>
-        
-        
-
+      
 h2{ text-align:center;
-color: orange;}
+color: red;}
 
 form{border:10px solid yellow;margin:95px;
 text-align: center;
@@ -30,28 +28,28 @@ label{
     color: black
 }
 button{
-    width: 500px;
+    width: 250px;
     font-size: 25px;
-    background-color: orange;
+    background-color:orangered;
 }
     </style>
     
     <form onsubmit="SaveToLocalStorage(event)">
         <fieldset>
-        <h2>Book a call</h2><br>
-        <p>Book a call and our representative will call within 1 hr of selected time</p><br>
-        <label> name</label><br>
-        <input type="text" id="username" name="username" required><br>
-        <label> email</label><br>
-        <input type="email" id= "email" name="email" required><br>
-        <label> phone</label><br>
+        <h2>Grocery store </h2><br>
+        <p>INVENTORY LIST</p><br>
+        <label> Item name</label><br>
+        <input type="text" id="itemname" name="itemname" required><br>
+        <label>item description</label><br>
+        <input type="text" id= "description" name="description" required><br>
+        <label>price in rupees</label><br>
 
-        <input type="tel" id="telp" name="telp" required><br>
-        <label>time for calls</label><br>
-        <input type="datetime-local" id="time" name="time" required>
+        <input type="number" id="price" name="price" required><br>
+        <label>quantity</label><br>
+        <input type="number" id="quantity" name="quantity" required>
         <br><br>
         
-        <button>GET A CALL</button>
+        <button>ADD ITEMS</button>
         </fieldset>
     </form>
     <ul id='listOfitems'></ul>
@@ -61,10 +59,10 @@ button{
         function SaveToLocalStorage(event)
         {
             event.preventDefault();
-            const names=event.target.username.value;
-            const emails=event.target.email.value;
-            const telps=event.target.telp.value;
-            const times=event.target.time.value;
+            const itemname=event.target.itemname.value;
+            const description=event.target.description.value;
+            const price=event.target.price.value;
+            const quantity=event.target.quantity.value;
 
         //    localStorage.setItem('name',names);
         //    localStorage.setItem('email',emails);
@@ -72,13 +70,12 @@ button{
         //    localStorage.setItem('time',times);
            
            const obj={
-            names,
-            emails,
-            telps,
-            times
-
+            itemname,
+            description,
+            price,
+            quantity
            } 
-           axios.post('https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData',obj)
+           axios.post('https://crudcrud.com/api/1e971ec3690341a08fa2dc74767a1dfb/appointmentData',obj)
            .then((res)=>{
             console.log(res)
             ShowUserOnScreen(res.data)
@@ -90,9 +87,9 @@ button{
 
         
         function removefrombackend(obj){
-        axios.delete(`https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData/${obj._id}`)
+        axios.delete(`https://crudcrud.com/api/1e971ec3690341a08fa2dc74767a1dfb/appointmentData/${obj._id}`)
         .then((res)=>{
-        console.log("successfully deleted");
+         console.log("successfully deleted");
         }).catch((err) =>
         {
         console.log(" Finding Difficult to delete user from backend ")
@@ -113,33 +110,39 @@ button{
             
             const parentrele= document.getElementById('listOfitems');
             const childele=document.createElement('li');
-            childele.textContent=childele.textContent+obj.names+" "+obj.emails+" "+obj.telps+" "+obj.times;
+            childele.textContent=childele.textContent+obj.itemname+"-"+obj. description+"-"+obj.price+"-"+obj. quantity;
 
-            const deletbtn=document.createElement("input");
-            deletbtn.type="button";
-            deletbtn.value='delete';
-            const editbtn=document.createElement('input');
-            editbtn.type='button';
-            editbtn.value='edit';
-
-            deletbtn.onclick = () => {
-                removefrombackend(obj);
+            const buy1btn=document.createElement("input");
+           buy1btn.type="button";
+            buy1btn.value='buy 1';
+            const buy2btn=document.createElement('input');
+            buy2btn.type='button';
+            buy2btn.value='buy 2';
+            var change = document.getElementById('quantity').value;
+            buy1btn.onclick = () => {
+                 removefrombackend(obj);
                 // localStorage.removeItem(obj.emails);
                  parentrele.removeChild(childele);
+                document.getElementById('itemname').value=obj.itemname;
+                document.getElementById('description').value=obj.description;
+                document.getElementById('price').value=obj.price;
+                change = change - 1;
+                document.getElementById('quantity').value = change;
             }
-            editbtn.onclick =() => {
+            buy2btn.onclick =() => {
                 //editfrombackend(obj)
                 removefrombackend(obj);
-                console.log('edit succesful')
+                // console.log('edit succesful')
                 parentrele.removeChild(childele);
                 // localStorage.removeItem(obj.emails);
-                document.getElementById('username').value=obj.names;
-                document.getElementById('email').value=obj.emails;
-                document.getElementById('telp').value=obj.telps;
-                document.getElementById('time').value=obj.times;
+                document.getElementById('itemname').value=obj.itemname;
+                document.getElementById('description').value=obj.description;
+                document.getElementById('price').value=obj.price;
+                change = change - 2;
+                document.getElementById('quantity').value = change;
               }
-            childele.appendChild(deletbtn);
-            childele.appendChild(editbtn);
+            childele.appendChild(buy1btn);
+            childele.appendChild(buy2btn);
 
               parentrele.appendChild(childele);
             
@@ -147,7 +150,7 @@ button{
           
         }
         window.addEventListener("DOMContentLoaded",()=>{
-            axios.get('https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData')
+            axios.get('https://crudcrud.com/api/1e971ec3690341a08fa2dc74767a1dfb/appointmentData')
            .then((res)=>{console.log(res);
             for(var i=0;i<res.data.length;i++)
             {
@@ -156,9 +159,9 @@ button{
            .catch((err)=>console.log(err))
            
         function removefrombackend(obj){
-        axios.delete(`https://crudcrud.com/api/9c77835e03f94ee9b7711bbf2a958404/appointmentData/${obj._id}`)
+        axios.delete(`https://crudcrud.com/api/1e971ec3690341a08fa2dc74767a1dfb/appointmentData/${obj._id}`)
         .then((res)=>{
-        console.log("successfully deleted");
+         console.log("successfully deleted");
         }).catch((err) =>
         {
         console.log(" Finding Difficult to delete user from backend ")
@@ -174,41 +177,49 @@ button{
     //     } )
 
     //   }
-          function ShowUserOnScreen(obj)
+    function ShowUserOnScreen(obj)
           {
+            
             const parentrele= document.getElementById('listOfitems');
             const childele=document.createElement('li');
-            childele.textContent=childele.textContent+obj.names+" "+obj.emails+" "+obj.telps+" "+obj.times;
+            childele.textContent=childele.textContent+obj.itemname+"-"+obj. description+"-"+obj.price+"-"+obj. quantity;
 
-            const deletbtn=document.createElement("input");
-            deletbtn.type="button";
-            deletbtn.value='delete';
-            const editbtn=document.createElement('input');
-            editbtn.type='button';
-            editbtn.value='edit';
-
-            deletbtn.onclick = () => {
-                removefrombackend(obj);
+            const buy1btn=document.createElement("input");
+            buy1btn.type="button";
+            buy1btn.value='buy 1';
+            const buy2btn=document.createElement('input');
+            buy2btn.type='button';
+            buy2btn.value='buy 2';
+            var change = document.getElementById('quantity').value;
+            buy1btn.onclick = () => {
+                 removefrombackend(obj);
                 // localStorage.removeItem(obj.emails);
-                parentrele.removeChild(childele);
+                 parentrele.removeChild(childele);
+                document.getElementById('itemname').value=obj.itemname;
+                document.getElementById('description').value=obj.description;
+                document.getElementById('price').value=obj.price;
+                change = change - 1;
+                document.getElementById('quantity').value = change;
             }
-            editbtn.onclick =() => {
-               // editfrombackend(obj)
-                removefrombackend(obj)
-                console.log('edit succesful')
+            buy2btn.onclick =() => {
+                //editfrombackend(obj)
+                 removefrombackend(obj);
+                // console.log('edit succesful')
                 parentrele.removeChild(childele);
                 // localStorage.removeItem(obj.emails);
-                document.getElementById('username').value=obj.names;
-                document.getElementById('email').value=obj.emails;
-                document.getElementById('telp').value=obj.telps;
-                document.getElementById('time').value=obj.times;
+                document.getElementById('itemname').value=obj.itemname;
+                document.getElementById('description').value=obj.description;
+                document.getElementById('price').value=obj.price;
+                change = change - 2;
+                document.getElementById('quantity').value = change;
               }
-            childele.appendChild(deletbtn);
-            childele.appendChild(editbtn);
+            childele.appendChild(buy1btn);
+            childele.appendChild(buy2btn);
 
               parentrele.appendChild(childele);
             
           }
+          
         })
         
      
